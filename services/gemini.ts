@@ -1,7 +1,15 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { AnalysisResult, TopicSuggestion } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_API_KEY || '' });
+const getApiKey = () => {
+  const apiKey = import.meta.env.VITE_API_KEY;
+  if (!apiKey) {
+    throw new Error('API Key is missing. Please provide a valid API key in the .env file.');
+  }
+  return apiKey;
+};
+
+const ai = new GoogleGenAI({ apiKey: getApiKey() });
 
 // Analyze an existing script
 export const analyzeScriptWithGemini = async (scriptText: string): Promise<AnalysisResult> => {
